@@ -14,3 +14,4 @@
 ---
 
 - ## __FOR SUPPORT JOIN [HERE](https://discord.gg/fqvQNDZYpj)__
+- ## __TUTORIAL [Youtube](https://youtu.be/w1U4VulNCR0)__
