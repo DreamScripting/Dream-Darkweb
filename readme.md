@@ -13,5 +13,5 @@
 - THEN YOU CAN RUN THE `start.bat` FILE THAT WILL TURN THE BOT ONE 
 ---
 
-- ## __FOR SUPPORT JOIN [HERE](https://discord.gg/fqvQNDZYpj)__
+- ## __FOR SUPPORT JOIN [HERE](https://discord.gg/kCTHGfC9qt)__
 - ## __TUTORIAL [Youtube](https://youtu.be/w1U4VulNCR0)__
