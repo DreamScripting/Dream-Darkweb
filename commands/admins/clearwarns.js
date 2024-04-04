@@ -1,6 +1,7 @@
 const discord = require("discord.js"),
-    { MessageButton, MessageActionRow } = require('discord.js'),
-    db = require(`quick.db`);
+    { ButtonBuilder, MessageActionRow, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 module.exports = {
     name: "clearwarn",
@@ -8,7 +9,7 @@ module.exports = {
     description: "helps you see the last message which got deleted",
     category: "Account",
     usage: "acreate `tag_here`",
-    botPermissions: ["EMBED_LINKS"],
+    botPermissions: [PermissionsBitField.Flags.EmbedLinks],
     userPermissions: [],
 
     async run(client, message, args) {
@@ -26,13 +27,13 @@ module.exports = {
             return message.reply("This Tag Is Not In Use");
         };
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("YES")
             .setCustomId("cwarn_success")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("NO")
                 .setCustomId("cwarn_cancel")
                 .setDisabled(false),
@@ -68,7 +69,7 @@ module.exports = {
 
                 log.send({
                     embeds: [
-                        new discord.MessageEmbed({
+                        new discord.EmbedBuilder({
                             description: `Warnings cleared of ${args[0]} By ${message.author} - \`${message.author.tag}\` which is owned by ${owner} - \`${owner.user.tag}\`\n${warns}/3 Warnings`,
                             color: client.config.embedColour
                         })

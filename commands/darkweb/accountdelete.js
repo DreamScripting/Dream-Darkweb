@@ -1,6 +1,7 @@
 const discord = require("discord.js"),
-    { MessageButton, MessageActionRow } = require('discord.js'),
-    db = require(`quick.db`);
+    { ButtonBuilder, MessageActionRow, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 module.exports = {
     name: "accountdelete",
@@ -8,7 +9,7 @@ module.exports = {
     description: "helps you see the last message which got deleted",
     category: "Account",
     usage: "delete `tag_here`",
-    botPermissions: ["EMBED_LINKS"],
+    botPermissions: [PermissionsBitField.Flags.EmbedLinks],
     userPermissions: [],
 
     async run(client, message, args) {
@@ -39,13 +40,13 @@ module.exports = {
                 .then(m => setTimeout(() => m.delete().catch(() => null), 5000));
         };
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("YES")
             .setCustomId("delete_success")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("NO")
                 .setCustomId("delete_cancel")
                 .setDisabled(false),
@@ -71,7 +72,7 @@ module.exports = {
                 let log = client.channels.cache.get(client.config.accountlog);
                 log.send({
                     embeds: [
-                        new discord.MessageEmbed({
+                        new discord.EmbedBuilder({
                             description: `Account Deleted ${args[0]} By <@${message.author}>\n${message.author.id}\n${message.author.tag}`,
                             color: client.config.embedColour
                         })

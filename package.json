@@ -1,11 +1,13 @@
 {
   "dependencies": {
     "ascii-table": "^0.0.9",
+    "better-sqlite3": "^9.4.5",
     "chalk": "^4.1.1",
     "colors": "^1.4.0",
-    "node-fetch": "^2.6.1",
-    "discord.js": "^13.6.0",
+    "discord": "^0.8.2",
+    "discord.js": "^14.14.1",
     "express": "^4.17.3",
-    "quick.db": "^7.1.3"
+    "node-fetch": "^2.6.1",
+    "quick.db": "^9.1.7"
   }
 }

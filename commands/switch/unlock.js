@@ -1,5 +1,6 @@
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js'),
-    db = require(`quick.db`);
+const { ButtonBuilder, MessageActionRow, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 module.exports = {
     name: "unlock",
@@ -7,7 +8,7 @@ module.exports = {
     description: "helps you see the last message which got deleted",
     category: "Account",
     usage: "unlock",
-    botPermissions: ["EMBED_LINKS"],
+    botPermissions: [PermissionsBitField.Flags.EmbedLinks],
     userPermissions: [],
 
     async run(client, message, args) {
@@ -21,7 +22,7 @@ module.exports = {
         if (locked !== true) {
             return message.reply({
                 embeds: [
-                    new MessageEmbed({
+                    new EmbedBuilder({
                         description: "Dark Web is not locked for everyone!",
                         color: client.config.embedColour
                     })
@@ -29,13 +30,13 @@ module.exports = {
             });
         };
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("YES")
             .setCustomId("unlock_success")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("NO")
                 .setCustomId("unlock_cancel")
                 .setDisabled(false),
@@ -44,7 +45,7 @@ module.exports = {
 
         let msg = await message.reply({
             embeds: [
-                new MessageEmbed({
+                new EmbedBuilder({
                     description: `Are you sure you want unlock Darkweb for everyone!`,
                     color: client.config.embedColour
                 })
@@ -62,7 +63,7 @@ module.exports = {
                 db.delete("locked");
                 return message.reply({
                     embeds: [
-                        new MessageEmbed({
+                        new EmbedBuilder({
                             description: 'Dark Web is now unlocked for everyone now!',
                             color: client.config.embedColour
                         })

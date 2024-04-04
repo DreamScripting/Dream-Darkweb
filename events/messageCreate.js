@@ -1,7 +1,8 @@
 const config = require("../config");
 
-const { MessageEmbed, Collection, Permissions } = require("discord.js"),
-    db = require("quick.db"),
+const { EmbedBuilder, Collection, PermissionsBitField } = require("discord.js"),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB(),
     Timeout = new Collection(),
     ms = require("ms");
 
@@ -11,19 +12,19 @@ module.exports.run = async (client, message) => {
     let prefix = client.config.prefix;
     const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
     if (message.content.match(prefixMention)) {
-        let mention = new MessageEmbed({
+        let mention = new EmbedBuilder({
             description:
                 `Hey, ${client.user.username} here!\n\nPrefix for this server is \`${prefix}\`\n` +
-                `For help join : \n[discord.gg/marvel](https://discord.gg/fqvQNDZYpj)\n` +
+                `For help join : \n[Support Server](https://discord.gg/fqvQNDZYpj)\n` +
                 `The original Developer of Dark-Web Bot [kool_damon](https://discord.com/users/672027578181353473)`,
             color: config.embedColour
         });
 
         let p1 = ["SEND_MESSAGES", "EMBED_LINKS"];
-        if (!message.guild.me.permissionsIn(message.channel).has(p1)) {
+        if (!message.guild.members.me.permissionsIn(message.channel).has([PermissionsBitField.Flags.SendMessages | PermissionsBitField.Flags.EmbedLinks])) {
             return message.author.send({
                 embeds: [
-                    new MessageEmbed({
+                    new EmbedBuilder({
                         description: `I need \`${p1.join(", ")}\` permissions in **\`${message.guild.name}\`**`,
                         color: client.config.embedColor,
                         thumbnail: message.guild.iconURL({ dynamic: true })
@@ -42,7 +43,7 @@ module.exports.run = async (client, message) => {
 
     if (message.content.startsWith(marvel)) {
         try {
-            const modOnly = db.get("modOnly" + message.guild.id);
+            const modOnly = db.get(`modOnly${message.guild.id}`);
             if (!message.member)
                 message.member = await message.guild.fetchMember(message);
             let m = message.content.toLowerCase(),
@@ -55,10 +56,10 @@ module.exports.run = async (client, message) => {
             if (command) {
 
                 let p1 = ["SEND_MESSAGES", "EMBED_LINKS"]
-                if (!message.guild.me.permissionsIn(message.channel).has(p1)) {
+                if (!message.guild.members.me.permissionsIn(message.channel).has(p1)) {
                     return message.author.send({
                         embeds: [
-                            new MessageEmbed({
+                            new EmbedBuilder({
                                 description: `I need \`${p1.join(", ")}\` permissions in ${message.guild.name}`,
                                 color: client.config.embedColor,
                                 thumbnail: message.guild.iconURL({ dynamic: true })
@@ -76,10 +77,11 @@ module.exports.run = async (client, message) => {
                         )}\` cooldown.`
                     ).then((m) => setTimeout(() => m.delete().catch(() => null), 3000));
                 };
+
                 let r = false;
                 if (!client.config.bowner.includes(message.member.id)) {
                     if (modOnly === true) {
-                        if (!message.member.permissionsIn(message.channel).has(Permissions.FLAGS.ADMINISTRATOR)) {
+                        if (!message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags.Administrator)) {
                             return message.reply(
                                 `${client.emoji.fail}| Bot is mod only in this guild that means you need \`ADMINISTRATOR\``
                             ).then((m) => setTimeout(() => m.delete().catch(() => null), 3000));
@@ -88,10 +90,10 @@ module.exports.run = async (client, message) => {
 
                     command.userPermissions.forEach((permission) => {
                         if (r === true) return;
-                        if (!message.member.permissionsIn(message.channel).has(permission)) {
+                        if (!message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags.permission)) {
                             r = true;
                             return message.reply(
-                                `${client.emoji.fail}| YOU NEED **\`${permission}\`** PERMISSION FIRST TO EXECUTE THIS COMMAND!!`
+                                `${client.emoji.fail}| YOU NEED **\`${client.bitfieldToName(permission)}\`** PERMISSION FIRST TO EXECUTE THIS COMMAND!!`
                             ).then((m) => setTimeout(() => m.delete().catch(() => null), 3000));
                         }
                     });
@@ -99,10 +101,10 @@ module.exports.run = async (client, message) => {
 
                 command.botPermissions.forEach((permission) => {
                     if (r === true) return;
-                    if (!message.guild.me.permissionsIn(message.channel).has(permission)) {
+                    if (!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.permission)) {
                         r = true;
                         return message.reply(
-                            `${client.emoji.fail}| I NEED **\`${permission}\`** PERMISSION FIRST TO EXECUTE THIS COMMAND!!`
+                            `${client.emoji.fail}| I NEED **\`${client.bitfieldToName(permission)}\`** PERMISSION FIRST TO EXECUTE THIS COMMAND!!`
                         ).then((m) => setTimeout(() => m.delete().catch(() => null), 3000));
                     };
                 });

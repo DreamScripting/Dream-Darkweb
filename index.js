@@ -1,26 +1,37 @@
 const config = require('./config.js'),
-    db = require('quick.db');
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 require('./live.js');
 require('colors')
 
-const { Intents, Collection, Client, MessageEmbed, MessageButton, MessageActionRow, WebhookClient } = require("discord.js"),
-    intents = new Intents([
-        "GUILD_MEMBERS",
-        "GUILD_MESSAGES",
-        "DIRECT_MESSAGES",
-        "GUILDS",
-        "GUILD_MESSAGE_REACTIONS",
-        "DIRECT_MESSAGE_REACTIONS"
-    ]),
+const { GatewayIntentBits, WebhookClient, Collection, Client, Partials, AttachmentBuilder, EmbedBuilder, PermissionsBitField, ButtonStyle } = require("js"),
+    // intents = new Intents([
+    //     "GUILD_MEMBERS",
+    //     "GUILD_MESSAGES",
+    //     "DIRECT_MESSAGES",
+    //     "GUILDS",
+    //     "GUILD_MESSAGE_REACTIONS",
+    //     "DIRECT_MESSAGE_REACTIONS"
+    // ]),
     client = new Client({
         intents: [
-            Intents.FLAGS.DIRECT_MESSAGES,
-            Intents.FLAGS.GUILDS,
-            Intents.FLAGS.GUILD_MESSAGES,
-            Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-            Intents.FLAGS.GUILD_MEMBERS,
-            Intents.FLAGS.DIRECT_MESSAGE_REACTIONS
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMembers,
+            // GatewayIntentBits.GuildBans,
+            GatewayIntentBits.GuildEmojisAndStickers,
+            GatewayIntentBits.GuildIntegrations,
+            GatewayIntentBits.GuildWebhooks,
+            GatewayIntentBits.GuildInvites,
+            GatewayIntentBits.GuildVoiceStates,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMessageReactions,
+            GatewayIntentBits.GuildMessageTyping,
+            GatewayIntentBits.DirectMessages,
+            GatewayIntentBits.DirectMessageReactions,
+            GatewayIntentBits.DirectMessageTyping,
+            GatewayIntentBits.GuildScheduledEvents,
+            GatewayIntentBits.MessageContent
         ],
         allowedMentions: { parse: ['users'], repliedUser: true },
         presence: {
@@ -30,13 +41,19 @@ const { Intents, Collection, Client, MessageEmbed, MessageButton, MessageActionR
                 type: config.statusType
             }]
         },
-        ws: { intents },
+        // ws: { intents },
         fetchAllMembers: true,
         restTimeOffset: 0,
         shards: "auto",
         restWsBridgetimeout: 100,
         disableEveryone: true,
-        partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'GUILD_MEMBER', 'USER']
+        partials: [
+            Partials.Message,
+            Partials.Channel,
+            Partials.Reaction,
+            Partials.GuildMember,
+            Partials.User
+        ]
     }),
     Timeout = new Collection();
 
@@ -48,6 +65,11 @@ client.errweb = new WebhookClient({
     id: process.env.errid || config.errid,
     token: process.env.errtoken || config.errtoken
 });
+
+client.bitfieldToName = function (bitfield) {
+    const permissions = new PermissionsBitField(bitfield);
+    return permissions.toArray();
+}
 
 ["command", "events"].forEach(handler => {
     require(`./handlers/${handler}`)(client);
@@ -80,7 +102,7 @@ client.on("messageCreate", async (message) => { // main message data
         const syndicate = server.roles.cache.get(config.syndicate);
         const racers = server.roles.cache.get(config.racers);
 
-        let embed = new MessageEmbed();
+        let embed = new EmbedBuilder();
 
         await server.members.fetch(); // caching all members for the bot to fetch all members.
 
@@ -89,7 +111,7 @@ client.on("messageCreate", async (message) => { // main message data
         if (!serverUser) {
             return message.reply({
                 embeds: [
-                    new MessageEmbed({
+                    new EmbedBuilder({
                         description: "You are not in server server!",
                         color: client.config.embedColor,
                     })
@@ -101,7 +123,7 @@ client.on("messageCreate", async (message) => { // main message data
         if (!serverUser.roles.cache.has(darkwebRole.id)) {
             return message.reply({
                 embeds: [
-                    new MessageEmbed({
+                    new EmbedBuilder({
                         description: "You don't have access to server DARK WEB!",
                         color: client.config.embedColor,
                     })
@@ -115,7 +137,7 @@ client.on("messageCreate", async (message) => { // main message data
         if (locked === true) {
             return message.reply({
                 embeds: [
-                    new MessageEmbed({
+                    new EmbedBuilder({
                         description: "Darkweb is currently locked for everyone by GODFATHER!",
                         color: client.config.embedColor,
                     })
@@ -132,7 +154,7 @@ client.on("messageCreate", async (message) => { // main message data
             if (blocked === true) {
                 return message.reply({
                     embeds: [
-                        new MessageEmbed({
+                        new EmbedBuilder({
                             description: "You have been blocked by the GODFATHER from using darkweb",
                             color: client.config.embedColor,
                         })
@@ -144,7 +166,7 @@ client.on("messageCreate", async (message) => { // main message data
             if (!sign) {
                 return message.reply({
                     embeds: [
-                        new MessageEmbed({
+                        new EmbedBuilder({
                             description: "You don't have a tag registered go to the server and use create command to get yourself a tag.",
                             color: client.config.embedColor,
                         })
@@ -162,13 +184,15 @@ client.on("messageCreate", async (message) => { // main message data
             var content = message.content;
         }
 
+        let nest = await db.get("nest");
+
         // here are the log channels fetch and embed builder
         let dwchannel = darkwebChannel,
             log = logChannel;
         embed.setColor(config.embedColour)
             .setTimestamp()
             // .setThumbnail(message.guild.iconURL({ dynamic: true }))
-            .setFooter({ text: "Made By : kool_damon", iconURL: server.iconURL({ dynamic: true }) });
+            .setFooter({ text: nest, iconURL: server.iconURL({ dynamic: true }) });
 
         if (!serverUser.roles.cache.has(syndicate.id)) {
             if (message.content) {
@@ -192,7 +216,7 @@ client.on("messageCreate", async (message) => { // main message data
         // if (Timeout.has(`cooldown${message.author.id}`)) {
         //     return message.reply({
         //         embeds: [
-        //             new MessageEmbed({
+        //             new EmbedBuilder({
         //                 description: `You are on a \`${ms(Timeout.get(`cooldown${message.author.id}`) - Date.now(), { long: true })}\` cooldown.`,
         //                 color: config.embedColour
         //             })
@@ -200,28 +224,28 @@ client.on("messageCreate", async (message) => { // main message data
         //     }).then((m) => setTimeout(() => m.delete().catch(() => null), 3000));
         // };
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("Send Post")
             .setCustomId("send_post")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("Cancel Post")
                 .setCustomId("cancel_post")
                 .setDisabled(false),
-            button2 = new MessageButton()
-                .setStyle("PRIMARY")
+            button2 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Primary)
                 .setLabel("Send Post @Everyone")
                 .setCustomId("send_post_")
                 .setDisabled(false),
-            button3 = new MessageButton()
-                .setStyle("PRIMARY")
+            button3 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Primary)
                 .setLabel("Send Post @Everyone #MIDNIGHT")
                 .setCustomId("send_post_2")
                 .setDisabled(false),
-            button4 = new MessageButton()
-                .setStyle("SECONDARY")
+            button4 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
                 .setLabel("Send Post Normally #MIDNIGHT")
                 .setCustomId("send_post_3")
                 .setDisabled(false),
@@ -282,7 +306,7 @@ client.on("messageCreate", async (message) => { // main message data
                     } catch (e) {
                         message.reply({
                             embeds: [
-                                new MessageEmbed({
+                                new EmbedBuilder({
                                     color: config.embedColour,
                                     description: `\`\`\`js\n${e.stack}!\`\`\``
                                 })
@@ -292,13 +316,15 @@ client.on("messageCreate", async (message) => { // main message data
                 } else if (serverUser.roles.cache.has(syndicate.id)) {
                     godfather.send({ embeds: [embed] });
                 }
+                let nest = await db.get("nest");
+
                 embed.addFields({
                     name: `Posted By - **__${sign}__**`,
                     value: `<@${message.author}>\n\`${message.author.tag}\`\n${message.author.id}`,
                     inline: true
                 })
                     .setFooter({
-                        text: 'Made By : kool_damon', iconURL: server.iconURL({dynamic : true})
+                        text: nest, iconURL: server.iconURL({ dynamic: true })
                     })
                     .setThumbnail(message.author.displayAvatarURL({ dynamic: true }));
 

@@ -1,6 +1,7 @@
 const discord = require("discord.js"),
-    { MessageButton, MessageActionRow } = require('discord.js'),
-    db = require(`quick.db`);
+    { ButtonBuilder, MessageActionRow, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 module.exports = {
     name: "warn",
@@ -8,7 +9,7 @@ module.exports = {
     description: "helps you see the last message which got deleted",
     category: "Account",
     usage: "acreate `tag_here`",
-    botPermissions: ["EMBED_LINKS"],
+    botPermissions: [PermissionsBitField.Flags.EmbedLinks],
     userPermissions: [],
 
     async run(client, message, args) {
@@ -33,13 +34,13 @@ module.exports = {
 
 
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("YES")
             .setCustomId("warn_success")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("NO")
                 .setCustomId("warn_cancel")
                 .setDisabled(false),
@@ -76,7 +77,7 @@ module.exports = {
                 let log = client.channels.cache.get(client.config.wdlog);
                 log.send({
                     embeds: [
-                        new discord.MessageEmbed({
+                        new discord.EmbedBuilder({
                             description: `User Warned ${args[0]} By ${message.author} - \`${message.author.tag}\` which is owned by ${owner} - \`${owner.user.tag}\`\n${warnings}/3 Warnings`,
                             color: client.config.embedColour
                         })
@@ -85,7 +86,7 @@ module.exports = {
                 return message.reply({ content: `Warning Sent to ${args[0]}` }) &&
                     owner.send({
                         embeds: [
-                            new discord.MessageEmbed({
+                            new discord.EmbedBuilder({
                                 description: `You have been warned for the wrong usage of dark web by GODFATHER!\nYou've recieved ${warnings}/3 warnings ${bl}`,
                                 color: client.config.embedColour
                             })

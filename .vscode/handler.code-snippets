@@ -1,0 +1,107 @@
+{
+    "Creates a command": {
+        "prefix": "cmd",
+        "body": [
+            "const { EmbedBuilder } = require(\"discord.js\")",
+            "",
+            "module.exports = {",
+            "    name: \"${1}\",",
+            "    description: \"${2}\",",
+            "    category: \"${2}\",",
+            "    cooldown: ${3|3,5,10,30,60|},",
+            "    aliases: [${4}],",
+            "    usage: [`${1} ${5:}`],",
+            "    example: [`${1} ${6:}`],",
+            "    botPerms: [],",
+            "    Permissions: [],",
+            "    owner: false,",
+            "      execute: async (message, args, client) => { ",
+            "",
+            "        $0",
+            "    }",
+            "    ",
+            "    ",
+            "}",
+            "",
+            ""
+        ],
+        "description": "Creates a command"
+    },
+    "!slash": {
+        "prefix": "!slash",
+        "body": [
+            "const { EmbedBuilder, Client, CommandInteraction } = require('discord.js');\r",
+            "\r",
+            "module.exports = {\r",
+            "    name: '',\r",
+            "    description: '',\r",
+            "    userPermissions: [''],\r",
+            "    /** \r",
+            "     * @param {Client} client \r",
+            "     * @param {CommandInteraction} interaction \r",
+            "     * @param {String[]} args \r",
+            "     */\r",
+            "    run: async(client, interaction, args) => {\r",
+            "\r",
+            "    },\r",
+            "};"
+        ],
+        "description": "Slash cmd sample"
+    },
+    "!options": {
+        "prefix": "!options",
+        "body": [
+            "options: [",
+            "    {",
+            "        name: '',",
+            "        description: '',",
+            "        type: '',",
+            "        required: true",
+            "    }",
+            "],",
+        ],
+        "description": "Slash cmd options sample"
+    },
+    "!embed": {
+        "prefix": "!embed",
+        "body": [
+            "const newEmbed = new EmbedBuilder()",
+            "    .setColor(client.config.embedColor)",
+            "    .setTitle(`title`)",
+            "    .setAuthor({name: `name`, iconURL: `url`})",
+            "    .setDescription(`text`)",
+            "    .addFields({name: `title`, value: `text`, inline: false})",
+            "    .setThumbnail(`url`)",
+            "    .setImage(`url`)",
+            "    .setFooter({text: `text`, iconURL: `url`})",
+            "    .setTimestamp();",
+        ],
+        "description": "Embed Message Sample"
+    },
+    "!footer": {
+        "prefix": "!footer",
+        "body": [
+            ".setFooter({text:`${interaction.guild.name}`, iconURL:`https://imgur.com/9zJ4Tjj.png`})"
+        ],
+        "description": "Footer sample for embed message"
+    },
+    "!author": {
+        "prefix": "!author",
+        "body": [
+            ".setAuthor({text:`${interaction.guild.name}`, iconURL:`https://imgur.com/9zJ4Tjj.png`})"
+        ],
+        "description": "Authir sample for embed message"
+    },
+    "!choices": {
+        "prefix": "!choices",
+        "body": [
+            "choices: [",
+            "    {",
+            "        name:'',",
+            "        value: ''",
+            "    }",
+            "],"
+        ],
+        "description": "Choices sample for slash cmd"
+    }
+}

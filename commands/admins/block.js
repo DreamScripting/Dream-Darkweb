@@ -1,6 +1,7 @@
 const discord = require("discord.js"),
-    { MessageButton, MessageActionRow } = require('discord.js'),
-    db = require(`quick.db`);
+    { ButtonBuilder, MessageActionRow, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 module.exports = {
     name: "block",
@@ -9,7 +10,7 @@ module.exports = {
     category: "Account",
     usage: "acreate `tag_here`",
     usage: "acreate `tag_here`",
-    botPermissions: ["EMBED_LINKS"],
+    botPermissions: [PermissionsBitField.Flags.EmbedLinks],
     userPermissions: [],
 
     async run(client, message, args) {
@@ -31,13 +32,13 @@ module.exports = {
             return message.reply(`This user is alredy blocked`);
         };
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("YES")
             .setCustomId("block_success")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("NO")
                 .setCustomId("block_cancel")
                 .setDisabled(false),
@@ -62,7 +63,7 @@ module.exports = {
                 let log = client.channels.cache.get(client.config.accountlog);
                 log.send({
                     embeds: [
-                        new discord.MessageEmbed({
+                        new discord.EmbedBuilder({
                             description: `Account Blocked ${args[0]} By ${message.author} - \`${message.author.tag_use}\` which is owned by ${owner} - \`${owner.user.tag}\``,
                             color: client.config.embedColour
                         })

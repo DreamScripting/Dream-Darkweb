@@ -1,13 +1,14 @@
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js'),
-    db = require(`quick.db`);
+const { ButtonBuilder, MessageActionRow, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
 
 module.exports = {
     name: "modsonly",
-     aliases: ["modonly"],
+    aliases: ["modonly"],
     description: "helps you see the last message which got deleted",
     category: "admins",
     usage: "modonly",
-    botPermissions: ["EMBED_LINKS"],
+    botPermissions: [PermissionsBitField.Flags.EmbedLinks],
     userPermissions: [],
 
     async run(client, message, args) {
@@ -18,13 +19,13 @@ module.exports = {
 
         let locked = db.get(`modOnly${message.guild.id}`);
 
-        const button = new MessageButton()
-            .setStyle("SUCCESS")
+        const button = new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
             .setLabel("ON")
             .setCustomId("mod_success")
             .setDisabled(false),
-            button1 = new MessageButton()
-                .setStyle("DANGER")
+            button1 = new ButtonBuilder()
+                .setStyle(ButtonStyle.Danger)
                 .setLabel("OFF")
                 .setCustomId("mod_cancel")
                 .setDisabled(false),
@@ -44,7 +45,7 @@ module.exports = {
                 if (locked === true) {
                     return message.reply({
                         embeds: [
-                            new MessageEmbed({
+                            new EmbedBuilder({
                                 description: "Mods Only is already on!",
                                 color: client.config.embedColour
                             })
@@ -55,7 +56,7 @@ module.exports = {
                 db.set(`modOnly${message.guild.id}`, true);
                 return message.reply({
                     embeds: [
-                        new MessageEmbed({
+                        new EmbedBuilder({
                             description: 'Turned on modsonly! Only users with admin access in the server will be able to use the bot',
                             color: client.config.embedColour
                         })
@@ -67,18 +68,18 @@ module.exports = {
                 if (locked === true) {
                     return message.reply({
                         embeds: [
-                            new MessageEmbed({
+                            new EmbedBuilder({
                                 description: "Mods Only is already off!",
                                 color: client.config.embedColour
                             })
                         ]
                     });
                 };
-                
+
                 db.delete(`modOnly${message.guild.id}`);
                 return message.reply({
                     embeds: [
-                        new MessageEmbed({
+                        new EmbedBuilder({
                             description: 'Turned Off modsonly! Everyone in the server will be able to use the bot',
                             color: client.config.embedColour
                         })
