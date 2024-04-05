@@ -43,7 +43,7 @@ module.exports.run = async (client, message) => {
 
     if (message.content.startsWith(marvel)) {
         try {
-            const modOnly = db.get(`modOnly${message.guild.id}`);
+            const modOnly = await db.get(`modOnly${message.guild.id}`);
             if (!message.member)
                 message.member = await message.guild.fetchMember(message);
             let m = message.content.toLowerCase(),

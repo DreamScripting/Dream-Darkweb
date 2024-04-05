@@ -1,4 +1,4 @@
-const { ButtonBuilder, MessageActionRow, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
     { QuickDB } = require("quick.db"),
     db = new QuickDB();
 
@@ -17,7 +17,7 @@ module.exports = {
             return message.reply("This Command Is For Admins Only!")
         };
 
-        let locked = db.get(`locked`);
+        let locked = await db.get(`locked`);
 
         if (locked !== true) {
             return message.reply({
@@ -40,7 +40,7 @@ module.exports = {
                 .setLabel("NO")
                 .setCustomId("unlock_cancel")
                 .setDisabled(false),
-            row = new MessageActionRow()
+            row = new ActionRowBuilder()
                 .addComponents(button, button1);
 
         let msg = await message.reply({

@@ -5,8 +5,8 @@ module.exports = {
   "darkwebChannel": "",  //  for the main channel where the main posts will be sent
   "darkwebRole": "",  //  role id which will give the users access to use the dark web bot
   "serverid": "",  // discord server id
-  "embedColour": "#000001", // embed line colour
   "TOKEN": "" || process.env.TOKEN,// here goes the bot token which we can find in the discord dev portal.
+  "embedColour": 0x000001, // embed line colour
   "prefix": "x", // perfix for the bot here to run all the commands
   "syndicate": "", // role id for creed posts
   "racers": "", // role id for racing posts

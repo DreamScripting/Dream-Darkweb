@@ -5,7 +5,7 @@ const config = require('./config.js'),
 require('./live.js');
 require('colors')
 
-const { GatewayIntentBits, WebhookClient, Collection, Client, Partials, AttachmentBuilder, EmbedBuilder, PermissionsBitField, ButtonStyle } = require("js"),
+const { GatewayIntentBits, WebhookClient, Collection, Client, Partials, ButtonBuilder, AttachmentBuilder, EmbedBuilder, PermissionsBitField, ButtonStyle, ActionRowBuilder, ActivityType } = require("discord.js"),
     // intents = new Intents([
     //     "GUILD_MEMBERS",
     //     "GUILD_MESSAGES",
@@ -38,7 +38,7 @@ const { GatewayIntentBits, WebhookClient, Collection, Client, Partials, Attachme
             status: "idle",
             activities: [{
                 name: "Powered By : kool_damon",
-                type: config.statusType
+                type: ActivityType.Listening
             }]
         },
         // ws: { intents },
@@ -69,11 +69,12 @@ client.errweb = new WebhookClient({
 client.bitfieldToName = function (bitfield) {
     const permissions = new PermissionsBitField(bitfield);
     return permissions.toArray();
-}
+};
 
 ["command", "events"].forEach(handler => {
     require(`./handlers/${handler}`)(client);
 });
+
 let godfather = new WebhookClient({
     id: process.env.webid || config.webid,
     token: process.env.webtoken || config.webtoken
@@ -84,7 +85,7 @@ let midnight = new WebhookClient({
     token: process.env.midtoken || config.mid.token
 });
 
-let adminmenu = new MessageActionRow();
+let adminmenu = new ActionRowBuilder();
 
 client.on("messageCreate", async (message) => { // main message data
 
@@ -132,7 +133,7 @@ client.on("messageCreate", async (message) => { // main message data
         };
 
         // checking if the bot is in locked phase or not 
-        let locked = db.get('locked');
+        let locked = await db.get('locked');
 
         if (locked === true) {
             return message.reply({
@@ -147,8 +148,8 @@ client.on("messageCreate", async (message) => { // main message data
 
         // function for the godfather message and normal user message to make a difference
         if (!serverUser.roles.cache.has(syndicate.id) || !serverUser.roles.cache.has(racers.id)) {
-            var sign = db.get(`anon_code${message.author.id}`);
-            let blocked = db.get(`block${sign}`);
+            var sign = await db.get(`anon_code${message.author.id}`);
+            let blocked = await db.get(`block${sign}`);
 
             // checking if the user is blocked or not!!!
             if (blocked === true) {
@@ -249,7 +250,7 @@ client.on("messageCreate", async (message) => { // main message data
                 .setLabel("Send Post Normally #MIDNIGHT")
                 .setCustomId("send_post_3")
                 .setDisabled(false),
-            row = new MessageActionRow()
+            row = new ActionRowBuilder()
                 .addComponents(button, button1);
 
         if (serverUser.roles.cache.has(syndicate.id)) {
@@ -320,7 +321,7 @@ client.on("messageCreate", async (message) => { // main message data
 
                 embed.addFields({
                     name: `Posted By - **__${sign}__**`,
-                    value: `<@${message.author}>\n\`${message.author.tag}\`\n${message.author.id}`,
+                    value: `${message.author}\n\`${message.author.tag}\`\n${message.author.id}`,
                     inline: true
                 })
                     .setFooter({

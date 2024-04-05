@@ -1,4 +1,4 @@
-const { ButtonBuilder, MessageActionRow, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
 
 module.exports = {
     name: "help",

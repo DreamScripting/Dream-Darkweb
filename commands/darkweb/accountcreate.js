@@ -1,5 +1,5 @@
 const discord = require("discord.js"),
-    { ButtonBuilder, MessageActionRow, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { ButtonBuilder, ActionRowBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
     { QuickDB } = require("quick.db"),
     db = new QuickDB();
 
@@ -29,8 +29,8 @@ module.exports = {
                 .then(m => setTimeout(() => m.delete().catch(() => null), 5000));
         }
 
-        let tag = db.get(`anon_code${message.author.id}`),
-            tag_use = db.get(args[0]);
+        let tag = await db.get(`anon_code${message.author.id}`),
+            tag_use = await db.get(args[0]);
 
         if (tag) {
             return message.reply(`You ALready Have A Tag Registered That Is - ${tag}`)
@@ -51,7 +51,7 @@ module.exports = {
                 .setLabel("NO")
                 .setCustomId("create_cancel")
                 .setDisabled(false),
-            row = new MessageActionRow()
+            row = new ActionRowBuilder()
                 .addComponents(button, button1);
 
         let msg = await message.reply({ content: `Are you sure you want to create ${args[0]} as your account!`, components: [row] }),
@@ -75,7 +75,7 @@ module.exports = {
                 log.send({
                     embeds: [
                         new discord.EmbedBuilder({
-                            description: `Account Created ${args[0]} By <@${message.author}>\n${message.author.id}\n${message.author.tag}`,
+                            description: `Account Created ${args[0]} By ${message.author}\n${message.author.id}\n${message.author.tag}`,
                             color: client.config.embedColour
                         })
                             .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))

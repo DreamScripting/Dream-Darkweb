@@ -1,5 +1,5 @@
 const discord = require("discord.js"),
-    { ButtonBuilder, MessageActionRow, ButtonStyle, PermissionsBitField } = require('discord.js'),
+    { ButtonBuilder, ActionRowBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
     { QuickDB } = require("quick.db"),
     db = new QuickDB();
 
@@ -40,7 +40,7 @@ module.exports = {
                 .setLabel("NO")
                 .setCustomId("unblock_cancel")
                 .setDisabled(false),
-            row = new MessageActionRow()
+            row = new ActionRowBuilder()
                 .addComponents(button, button1);
 
         let msg = await message.reply({ content: `Are you sure you want to block ${args[0]} !`, components: [row] }),
@@ -62,7 +62,7 @@ module.exports = {
                 log.send({
                     embeds: [
                         new discord.EmbedBuilder({
-                            description: `Account Unblocked ${args[0]} By <@${message.author}> - \`${message.author.tag}\` which is owned by <@${owner}> - \`${owner.user.tag}\``,
+                            description: `Account Unblocked ${args[0]} By ${message.author} - \`${message.author.tag}\` which is owned by ${owner} - \`${owner.user.tag}\``,
                             color: client.config.embedColour
                         })
                     ]

@@ -1,4 +1,4 @@
-const { ButtonBuilder, MessageActionRow, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle, PermissionsBitField } = require('discord.js'),
     { QuickDB } = require("quick.db"),
     db = new QuickDB();
 
@@ -29,7 +29,7 @@ module.exports = {
                 .setLabel("OFF")
                 .setCustomId("mod_cancel")
                 .setDisabled(false),
-            row = new MessageActionRow()
+            row = new ActionRowBuilder()
                 .addComponents(button, button1);
 
         let msg = await message.reply({ content: `Are you sure you want to turn on mods only feature..?`, components: [row] }),
