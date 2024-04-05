@@ -10,14 +10,14 @@ module.exports = client => {
             let pull = require(`../commands/${dir}/${file}`);
             if (pull.name) {
                 client.commands.set(pull.name, pull);
-                table.addRow(file, "♻️  => no error.!");
+                console.log(` :: ⬜️ Loaded Command : ${file} ♻️  => no error.!`.bgWhite);
             } else {
-                table.addRow(file, `☠️  => error.!`);
+                console.log(` :: ⬜️ Failed To Load : ${file} ☠️ error.`.bgRed);
                 continue;
             }
             if (pull.aliases && Array.isArray(pull.aliases))
                 pull.aliases.forEach(alias => client.aliases.set(alias, pull.name));
         }
     });
-    console.log(table.toString().green);
+    // console.log(table.toString().green);
 };

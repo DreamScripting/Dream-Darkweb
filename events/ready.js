@@ -1,3 +1,9 @@
+var colors = require('colors');
+ 
+colors.setTheme({
+  custom: ['bgCyan', 'black', 'bold']
+});
+
 module.exports.run = async (client) => {
     const config = require('../config.js'); // importing the configurations of the bot
 
@@ -11,45 +17,45 @@ module.exports.run = async (client) => {
     const wdlog = client.channels.cache.get(config.wdlog);
     const admin = server.roles.cache.get(config.adminrole);
 
-    if (!server) console.log('SERVER NOT FOUND'.red);
-    if (!logChannel) console.log('LOGS CHANNEL NOT FOUND'.red);
-    if (!darkwebChannel) console.log('DARKWEB CHANNEL NOT FOUND'.red);
-    if (!darkwebRole) console.log('DARKWEB ROLE NOT FOUND'.red);
+    if (!server) console.log(' :: ⬜️ Error : SERVER NOT FOUND'.bgRed);
+    if (!logChannel) console.log(' :: ⬜️ Error : LOGS CHANNEL NOT FOUND'.bgRed);
+    if (!darkwebChannel) console.log(' :: ⬜️ Error : DARKWEB CHANNEL NOT FOUND'.bgRed);
+    if (!darkwebRole) console.log(' :: ⬜️ Error : DARKWEB ROLE NOT FOUND'.bgRed);
 
     if (!syndicate) {
-        console.log("SYNDICATE NOT FOUND".red)
+        console.log(" :: ⬜️ Error : SYNDICATE NOT FOUND".bgRed)
     } else {
-        console.log(`${syndicate.name}`.green)
+        console.log(` :: ⬜️ Loaded : ${syndicate.name}`.bgYellow)
     };
 
     if (!racers) {
-        console.log("RACERS NOT FOUND".red)
+        console.log(" :: ⬜️ Error : RACERS NOT FOUND".bgRed)
     } else {
-        console.log(`${racers.name}`.green)
+        console.log(` :: ⬜️ Loaded : ${racers.name}`.bgYellow)
     };
 
     if (!accountlog) {
-        console.log("ACCOUNT LOG CHANNEL NOT FOUND".red)
+        console.log(" :: ⬜️ Error : ACCOUNT LOG CHANNEL NOT FOUND".bgRed)
     } else {
-        console.log(`${accountlog.name}`.green)
+        console.log(` :: ⬜️ Loaded : ${accountlog.name}`.bgYellow)
     };
 
     if (!wdlog) {
-        console.log("WARN AND DELETE LOG NOT FOUND".red)
+        console.log("WARN AND DELETE LOG NOT FOUND".bgRed)
     } else {
-        console.log(`${wdlog.name}`.green)
+        console.log(` :: ⬜️ Loaded : ${wdlog.name}`.bgYellow)
     };
 
     if (!admin) {
-        console.log("ADMIN ROLE NOT FOUND".red)
+        console.log(" :: ⬜️ Error : ADMIN ROLE NOT FOUND".bgRed)
     } else {
-        console.log(`${admin.name}`.green)
+        console.log(` :: ⬜️ Loaded : ${admin.name}`.bgYellow)
     }
 
-    if (server) console.log(`${server.name}`.green);
-    if (logChannel) console.log(`${logChannel.name}`.green);
-    if (darkwebChannel) console.log(`${darkwebChannel.name}`.green);
-    if (darkwebRole) console.log(`${darkwebRole.name}`.green);
+    if (server) console.log(` :: ⬜️ Loaded : ${server.name}`.bgYellow);
+    if (logChannel) console.log(` :: ⬜️ Loaded : ${logChannel.name}`.bgYellow);
+    if (darkwebChannel) console.log(` :: ⬜️ Loaded : ${darkwebChannel.name}`.bgYellow);
+    if (darkwebRole) console.log(` :: ⬜️ Loaded : ${darkwebRole.name}`.bgYellow);
 
-    console.log('DARK WEB BOT BY kool_damon IS NOW READY TO BE USED'.bgRed)
+    console.log(' :: ⬜️ Application : DARK WEB BOT BY kool_damon IS NOW READY TO BE USED'.custom)
 };

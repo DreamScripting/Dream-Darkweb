@@ -363,4 +363,4 @@ process.on("beforeExit", (code) => {
 process.on("exit", (code) => {
     client.errweb.send(`\`\`\`js\n${code}\`\`\``);
 });
-process.on("multipleResolves", (type, promise, reason) => { });
+// process.on("multipleResolves", (type, promise, reason) => { });

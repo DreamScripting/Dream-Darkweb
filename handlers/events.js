@@ -11,17 +11,17 @@ module.exports = client => {
         try {
             let pull = require(`../events/${file}`);
             if (pull.event && typeof pull.event !== "string") {
-                table.addRow(file, `❌ -> Property event should be string.`);
+                console.log(` :: ⬜️ Failed To Load : ${file} ❌ Property event should be string.`.bgRed);
                 continue;
             }
             pull.event = pull.event || file.replace(".js", "");
             client.on(pull.event, pull.run.bind(null, client));
-            table.addRow(file, "♻️  => no error.!");
+            console.log(` :: ⬜️ Loaded Event : ${file} ♻️  => no error.!`.bgGreen);
         } catch (err) {
             console.log("");
             console.log(err);
-            table.addRow(file, `☠️  => error.!`);
+            console.log(` :: ⬜️ Failed To Load : ${file} ☠️ error.`.bgRed);
         }
     }
-    console.log(table.toString().green);
+    // console.log(table.toString().green);
 };
