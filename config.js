@@ -1,6 +1,6 @@
 module.exports = {
   "statusType": "LISTENING", // WATCHING, PLAYING, LISTENING, STREAMING
-  "bowner": ["672027578181353473"], // bot owner id here
+  "bowner": ["294468324115349505"], // bot owner id here
   "logChannel": "", // for logs
   "darkwebChannel": "",  //  for the main channel where the main posts will be sent
   "darkwebRole": "",  //  role id which will give the users access to use the dark web bot
