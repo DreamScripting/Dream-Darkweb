@@ -18,10 +18,8 @@ module.exports = client => {
             client.on(pull.event, pull.run.bind(null, client));
             console.log(` :: ⬜️ Loaded Event : ${file} ♻️  => no error.!`.bgGreen);
         } catch (err) {
-            console.log("");
-            console.log(err);
+            console.log(err.stack);
             console.log(` :: ⬜️ Failed To Load : ${file} ☠️ error.`.bgRed);
         }
     }
-    // console.log(table.toString().green);
 };
