@@ -1,9 +1,5 @@
-const { readdirSync } = require("fs"),
-    ascii = require("ascii-table");
+const { readdirSync } = require("fs");
 
-let table = new ascii("Events");
-
-table.setHeading("Event Name", "Loaded Status");
 module.exports = client => {
     const events = readdirSync(`./events/`).filter(file => file.endsWith(".js"));
 
