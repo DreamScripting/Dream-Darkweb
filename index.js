@@ -66,16 +66,6 @@ client.bitfieldToName = function (bitfield) {
     require(`./handlers/${handler}`)(client);
 });
 
-let godfather = new WebhookClient({
-    id: process.env.webid || config.webid,
-    token: process.env.webtoken || config.webtoken
-});
-
-let midnight = new WebhookClient({
-    id: process.env.midid || config.mid.id,
-    token: process.env.midtoken || config.mid.token
-});
-
 require("./events2/dmFunction.js")(client);
 
 

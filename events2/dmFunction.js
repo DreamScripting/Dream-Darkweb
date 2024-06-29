@@ -1,6 +1,7 @@
-const { QuickDB } = require("quick.db"),
+const config = require("../config"),
+    { QuickDB } = require("quick.db"),
     db = new QuickDB(),
-    { ButtonBuilder, EmbedBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+    { ButtonBuilder, EmbedBuilder, ButtonStyle, ActionRowBuilder, WebhookClient } = require("discord.js");
 
 module.exports = function (client, options) {
     const description = {
@@ -12,6 +13,15 @@ module.exports = function (client, options) {
         ` :: ⬜️ Loaded Extra Event : ${description.name} from ("${description.filename}")`.bgMagenta
     );
 
+    let godfather = new WebhookClient({
+        id: process.env.webid || config.webid,
+        token: process.env.webtoken || config.webtoken
+    });
+
+    let midnight = new WebhookClient({
+        id: process.env.midid || config.mid.id,
+        token: process.env.midtoken || config.mid.token
+    });
 
     client.on("messageCreate", async (message) => { // main message data
 
