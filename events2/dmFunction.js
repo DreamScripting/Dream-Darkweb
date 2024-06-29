@@ -204,19 +204,73 @@ module.exports = function (client, options) {
 
             collector.on("collect", async (button) => {
                 if (button.customId === "send_post_") {
-                    godfather.send({ embeds: [embed], content: "@everyone" }) &&
+                    godfather.send({ embeds: [embed], content: "@everyone" })
+                    let nest = await db.get("nest");
+
+                    if (sign == undefined) {
+                        sign = "Admins"
+                    }
+
+                    embed.addFields({
+                        name: `Posted By - **__${sign}__**`,
+                        value: `${message.author}\n\`${message.author.tag}\`\n${message.author.id}`,
+                        inline: true
+                    })
+                        .setFooter({
+                            text: nest, iconURL: server.iconURL({ dynamic: true })
+                        })
+                        .setThumbnail(message.author.displayAvatarURL({ dynamic: true }));
+
+                    return log.send({ embeds: [embed] }) &&
                         message.reply({ content: "Sent Your Post Successfully!" }) &&
                         button.message.delete();
+
                 };
                 if (button.customId === "send_post_2") {
-                    midnight.send({ embeds: [embed], content: "@everyone" }) &&
+                    midnight.send({ embeds: [embed], content: "@everyone" })
+                    let nest = await db.get("nest");
+
+                    if (sign == undefined) {
+                        sign = "Admins"
+                    }
+
+                    embed.addFields({
+                        name: `Posted By - **__${sign}__**`,
+                        value: `${message.author}\n\`${message.author.tag}\`\n${message.author.id}`,
+                        inline: true
+                    })
+                        .setFooter({
+                            text: nest, iconURL: server.iconURL({ dynamic: true })
+                        })
+                        .setThumbnail(message.author.displayAvatarURL({ dynamic: true }));
+
+                    return log.send({ embeds: [embed] }) &&
                         message.reply({ content: "Sent Your Post Successfully!" }) &&
                         button.message.delete();
+
                 };
                 if (button.customId === "send_post_3") {
-                    midnight.send({ embeds: [embed] }) &&
+                    midnight.send({ embeds: [embed] })
+                    let nest = await db.get("nest");
+
+                    if (sign == undefined) {
+                        sign = "Admins"
+                    }
+
+                    embed.addFields({
+                        name: `Posted By - **__${sign}__**`,
+                        value: `${message.author}\n\`${message.author.tag}\`\n${message.author.id}`,
+                        inline: true
+                    })
+                        .setFooter({
+                            text: nest, iconURL: server.iconURL({ dynamic: true })
+                        })
+                        .setThumbnail(message.author.displayAvatarURL({ dynamic: true }));
+
+                    return log.send({ embeds: [embed] }) &&
                         message.reply({ content: "Sent Your Post Successfully!" }) &&
                         button.message.delete();
+
                 };
                 if (button.customId === "send_post") {
                     if (!serverUser.roles.cache.has(syndicate.id) || !serverUser.roles.cache.has(racers.id)) {
