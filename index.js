@@ -6,14 +6,6 @@ require('./live.js');
 require('colors')
 
 const { GatewayIntentBits, WebhookClient, Collection, Client, Partials, ButtonBuilder, AttachmentBuilder, EmbedBuilder, PermissionsBitField, ButtonStyle, ActionRowBuilder, ActivityType } = require("discord.js"),
-    // intents = new Intents([
-    //     "GUILD_MEMBERS",
-    //     "GUILD_MESSAGES",
-    //     "DIRECT_MESSAGES",
-    //     "GUILDS",
-    //     "GUILD_MESSAGE_REACTIONS",
-    //     "DIRECT_MESSAGE_REACTIONS"
-    // ]),
     client = new Client({
         intents: [
             GatewayIntentBits.Guilds,
@@ -41,7 +33,6 @@ const { GatewayIntentBits, WebhookClient, Collection, Client, Partials, ButtonBu
                 type: ActivityType.Listening
             }]
         },
-        // ws: { intents },
         fetchAllMembers: true,
         restTimeOffset: 0,
         shards: "auto",
@@ -105,4 +96,3 @@ process.on("beforeExit", (code) => {
 process.on("exit", (code) => {
     client.errweb.send(`\`\`\`js\n${code}\`\`\``);
 });
-// process.on("multipleResolves", (type, promise, reason) => { });
