@@ -1,7 +1,8 @@
 const config = require("../config"),
     { QuickDB } = require("quick.db"),
     db = new QuickDB(),
-    { ButtonBuilder, EmbedBuilder, ButtonStyle, ActionRowBuilder, WebhookClient } = require("discord.js");
+    { ButtonBuilder, EmbedBuilder, ButtonStyle, Collection, ActionRowBuilder, WebhookClient } = require("discord.js"),
+    Timeout = new Collection();
 
 module.exports = function (client, options) {
     const description = {
@@ -254,6 +255,10 @@ module.exports = function (client, options) {
                         godfather.send({ embeds: [embed] });
                     }
                     let nest = await db.get("nest");
+
+                    if (sign == undefined) {
+                        sign = "Admins"
+                    }
 
                     embed.addFields({
                         name: `Posted By - **__${sign}__**`,

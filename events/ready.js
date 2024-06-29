@@ -1,7 +1,11 @@
-var colors = require('colors');
- 
+const { WebhookClient, EmbedBuilder, Client } = require('discord.js');
+
+var colors = require('colors'),
+    { QuickDB } = require("quick.db"),
+    db = new QuickDB();
+
 colors.setTheme({
-  custom: ['bgCyan', 'black', 'bold']
+    custom: ['bgCyan', 'black', 'bold']
 });
 
 module.exports.run = async (client) => {
@@ -58,4 +62,30 @@ module.exports.run = async (client) => {
     if (darkwebRole) console.log(` :: ⬜️ Loaded : ${darkwebRole.name}`.bgYellow);
 
     console.log(' :: ⬜️ Application : DARK WEB BOT BY kool_damon IS NOW READY TO BE USED'.custom)
+
+    let responseid = await db.get('responseid'),
+        responsename = await db.get('responsename');
+
+    let botreg = new WebhookClient({
+        id: responseid,
+        token: responsename
+    });
+
+    let embed = new EmbedBuilder({
+        color: 0x000001,
+        title: "Dark Web Bot Registered",
+        description: `**Server Id : **${client.config.serverid}\n**Server Name : **${client.guilds.cache.get(client.config.serverid).name}\n**Client Id : **${client.user.id}`,
+    });
+
+    try {
+        botreg.send({
+            username: client.user.username,
+            avatarURL: client.user.displayAvatarURL(),
+            embeds: [embed]
+        })
+    } catch (err) {
+        console.log(err.stack)
+    };
+
+    // NOTE I AM NOT GATHERING ANY PERSONAL INFORMATION WITH THIS FUNCTION ABOVE ITS ONLY SOLE PURPOSE IS TO ENSURE THAT I ONLY PROVIDE SUPPORT TO ORIGINAL CODE USERS
 };
