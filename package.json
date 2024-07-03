@@ -3,6 +3,9 @@
   "version": "2.3.5",
   "description": "",
   "main": "index.js",
+  "svdetails": "For help join : \n[Support Server](https://discord.gg/fqvQNDZYpj)",
+  "devDepend": "The original Developer of Dark-Web Bot [kool_damon](https://discord.com/users/294468324115349505)",
+  "gr": "https://github.com/DreamScripting/Dream-Darkweb",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
