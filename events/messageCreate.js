@@ -1,7 +1,7 @@
 const config = require("../config"),
     details = require('../package.json');
 
-const { EmbedBuilder, Collection, PermissionsBitField, ButtonBuilder } = require("discord.js"),
+const { EmbedBuilder, Collection, PermissionsBitField, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js"),
     { QuickDB } = require("quick.db"),
     db = new QuickDB(),
     Timeout = new Collection(),
@@ -38,7 +38,7 @@ module.exports.run = async (client, message) => {
                 ]
             }).catch(() => null);
         };
-        return message.reply({ embeds: [mention] })
+        return message.reply({ embeds: [mention], components: [row] })
             .then(m => setTimeout(() => m.delete().catch(() => null), 10000));
     };
 
