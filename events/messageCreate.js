@@ -1,7 +1,7 @@
 const config = require("../config"),
     details = require('../package.json');
 
-const { EmbedBuilder, Collection, PermissionsBitField } = require("discord.js"),
+const { EmbedBuilder, Collection, PermissionsBitField, ButtonBuilder } = require("discord.js"),
     { QuickDB } = require("quick.db"),
     db = new QuickDB(),
     Timeout = new Collection(),
