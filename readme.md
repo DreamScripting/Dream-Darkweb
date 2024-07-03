@@ -15,3 +15,6 @@
 
 - ## __FOR SUPPORT JOIN [HERE](https://discord.gg/kCTHGfC9qt)__
 - ## __TUTORIAL [Youtube](https://youtu.be/w1U4VulNCR0)__
+
+
+## __Note : This code is free to use only on one condition that is if you does not remove the creator credits__
