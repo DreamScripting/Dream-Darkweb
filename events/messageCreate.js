@@ -1,4 +1,5 @@
-const config = require("../config");
+const config = require("../config"),
+    details = require('../package.json');
 
 const { EmbedBuilder, Collection, PermissionsBitField } = require("discord.js"),
     { QuickDB } = require("quick.db"),
@@ -13,12 +14,17 @@ module.exports.run = async (client, message) => {
     const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
     if (message.content.match(prefixMention)) {
         let mention = new EmbedBuilder({
-            description:
-                `Hey, ${client.user.username} here!\n\nPrefix for this server is \`${prefix}\`\n` +
-                `For help join : \n[Support Server](https://discord.gg/fqvQNDZYpj)\n` +
-                `The original Developer of Dark-Web Bot [kool_damon](https://discord.com/users/672027578181353473)`,
+            description: `Hey, ${client.user.username} here!\n\nPrefix for this server is \`${prefix}\`\n${details.svdetails}\n${details.devDepend}`,
             color: config.embedColour
         });
+        const link1 = new ButtonBuilder()
+            .setStyle(ButtonStyle.Link)
+            .setLabel("Github Repository")
+            .setURL(details.gr)
+            .setDisabled(false),
+
+            row = new ActionRowBuilder()
+                .addComponents(link1);
 
         let p1 = ["SEND_MESSAGES", "EMBED_LINKS"];
         if (!message.guild.members.me.permissionsIn(message.channel).has([PermissionsBitField.Flags.SendMessages | PermissionsBitField.Flags.EmbedLinks])) {
