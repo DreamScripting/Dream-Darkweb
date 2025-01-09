@@ -22,8 +22,8 @@ module.exports = {
             return message.reply("You forgot to mention the tag")
         };
 
-        let tag_use = db.get(args[0]),
-            tag_block = db.get(`block${args[0]}`);
+        let tag_use = await db.get(args[0]),
+            tag_block = await db.get(`block${args[0]}`);
 
         if (tag_use !== true) {
             return message.reply("This Tag Is Not In Use");
@@ -58,13 +58,13 @@ module.exports = {
 
                 // database update
                 db.set(`block${args[0]}`, true);
-                let acc_user = db.get(`acc_user${args[0]}`);
+                let acc_user = await db.get(`acc_user${args[0]}`);
                 let owner = await message.guild.members.fetch(acc_user);
                 let log = client.channels.cache.get(client.config.accountlog);
                 log.send({
                     embeds: [
                         new discord.EmbedBuilder({
-                            description: `Account Blocked ${args[0]} By ${message.author} - \`${message.author.tag_use}\` which is owned by ${owner} - \`${owner.user.tag}\``,
+                            description: `Account Blocked ${args[0]} By ${message.author} - \`${message.author.tag}\` which is owned by ${owner} - \`${owner.user.tag}\``,
                             color: client.config.embedColour
                         })
                     ]
